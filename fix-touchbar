@@ -1,0 +1,43 @@
+#! /bin/zsh
+
+MAX_IDLE=60
+
+#PRESENTATION_MODE="functionKeys"
+#PRESENTATION_MODE="appWithControlStrip"
+PRESENTATION_MODE="fullControlStrip"
+
+logger () {
+	echo "`date +'%F %T'`: $@"
+}
+
+restart_touchbar() {
+	defaults write com.apple.touchbar.agent PresentationModeGlobal -string $PRESENTATION_MODE
+	sudo pkill -x TouchBarServer
+	LAST_RESTART=$(date +%s)
+}
+
+check_for_restart() {
+	NOW=$(date +%s)
+	if (( NOW > LAST_CHECK + 10 )); then
+		# This happens after wakeup from sleep.
+		logger "restarting: last check was more than 10 seconds ago"
+		restart_touchbar
+	fi
+
+	IDLE=$(ioreg -c IOHIDSystem | awk '/HIDIdleTime/ {print int($NF/1000000000); exit}')
+	if (( IDLE >= MAX_IDLE )); then
+		if (( NOW >= LAST_RESTART + MAX_IDLE )); then
+			logger "restarting: idle and last restart was more than $MAX_IDLE seconds ago"
+			restart_touchbar
+		fi
+	fi
+	LAST_CHECK=$NOW
+}
+
+logger "start fix-touchbar monitor"
+LAST_RESTART=0
+LAST_CHECK=0
+while :; do
+	check_for_restart
+	sleep 2
+done
