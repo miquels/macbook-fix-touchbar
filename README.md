@@ -26,7 +26,7 @@ This seems to work. Most of the time, at least.
 
 For a script that runs as a normal user to be able to kill the (root) `TouchBarServer`
 process, you need to add a line to the end of the _User Specification_ part of
-the `/etc/sudoers` file. You can do this by running `visudo` and adding this:
+the `/etc/sudoers` file. You can do this by running `visudo` **as root** and adding this:
 
 ```
 ALL             ALL=(root) NOPASSWD: /usr/bin/pkill -x TouchBarServer
@@ -35,7 +35,7 @@ ALL             ALL=(root) NOPASSWD: /usr/bin/pkill -x TouchBarServer
 Note that this will enable any user on the macbook to issue the command
 `sudo pkill -x TouchBarServer` - which should not really be a problem.
 
-Then, run these commands to install the script to run as a daemon:
+Then, run these commands (as yourself, **not as root**) to install the script to run as a daemon:
 
 ```
 cp fix-touchbar ~/Library/Scripts
