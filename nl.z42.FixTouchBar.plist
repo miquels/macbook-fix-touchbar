@@ -6,8 +6,7 @@
         <string>nl.z42.FixTouchBar</string>
         <key>ProgramArguments</key>
         <array>
-	<string>/bin/sh</string>
-        <string>-c</string>
+	<string>/bin/zsh</string>
 	<string>$HOME/Library/Scripts/fix-touchbar</string>
         </array>
         <key>RunAtLoad</key>
