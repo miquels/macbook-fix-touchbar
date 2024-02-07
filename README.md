@@ -18,6 +18,7 @@ it checks:
 
 - are we idle more than 60 seconds (not typing etc)
 - in that case, restart the TouchBarServer process once a minute.
+  (note that we _also_ restart the `ControlStrip` process for good measure)
 
 This seems to work. Most of the time, at least.
 
@@ -45,5 +46,19 @@ chmod 644 ~/Library/LaunchAgents/nl.z42.FixTouchBar.plist
 launchctl enable gui/$UID/nl.z42.FixTouchBar
 launchctl start nl.z42.FixTouchBar
 ```
+
+## Uninstall:
+
+Run these commands as a normal user:
+
+```
+launchctl stop nl.z42.FixTouchBar
+launchctl disable gui/$UID/nl.z42.FixTouchBar
+rm ~/Library/Scripts/fix-touchbar ~/Library/LaunchAgents/nl.z42.FixTouchBar.plist
+```
+
+Then run `visudo` as root to remove the `pkill` line from the sudoers file.
+
+
 
 Good luck!
