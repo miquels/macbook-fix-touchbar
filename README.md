@@ -29,21 +29,21 @@ process, you need to add a line to the end of the _User Specification_ part of
 the `/etc/sudoers` file. You can do this by running `visudo` and adding this:
 
 ```
-ALL             ALL=(root) NOPASSWD: /usr/bin/pkill TouchBarServer
+ALL             ALL=(root) NOPASSWD: /usr/bin/pkill -x TouchBarServer
 ```
 
 Note that this will enable any user on the macbook to issue the command
-`sudo pkill TouchBarServer` - which should not really be a problem.
+`sudo pkill -x TouchBarServer` - which should not really be a problem.
 
 Then, run these commands to install the script to run as a daemon:
 
 ```
 cp fix-touchbar ~/Library/Scripts
 chmod 755 ~/Library/Scripts/fix-touchbar
-cp nl.z42.FixTouchBar.plist ~/Library/Library/LaunchAgents
-chmod 644 ~/Library/Library/LaunchAgents
-launchctl enable fix-touchbar
-launchctl start fix-touchbar
+cp nl.z42.FixTouchBar.plist ~/Library/LaunchAgents/
+chmod 644 ~/Library/LaunchAgents/nl.z42.FixTouchBar.plist
+launchctl enable gui/$UID/nl.z42.FixTouchBar
+launchctl start nl.z42.FixTouchBar
 ```
 
 Good luck!

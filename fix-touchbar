@@ -13,6 +13,7 @@ logger () {
 restart_touchbar() {
 	defaults write com.apple.touchbar.agent PresentationModeGlobal -string $PRESENTATION_MODE
 	sudo pkill -x TouchBarServer
+	pkill -x ControlStrip
 	LAST_RESTART=$(date +%s)
 }
 
